@@ -62,7 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 3. Dark / Light Theme Switcher
   const themeToggleBtn = document.getElementById('theme-toggle');
-  const savedTheme = localStorage.getItem('caden-portfolio-theme') || 'dark';
+  const systemPrefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+  const savedTheme = localStorage.getItem('caden-portfolio-theme') || (systemPrefersLight ? 'light' : 'dark');
 
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeIcon(savedTheme);
@@ -127,12 +128,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 6. Interactive Contact Form Submission
+  // 6. Interactive Contact Form Submission (posts to Formspree)
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xoeaqypn';
+
   const contactForm = document.getElementById('contact-form');
   if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       const name = document.getElementById('form-name').value.trim();
       const email = document.getElementById('form-email').value.trim();
       const message = document.getElementById('form-message').value.trim();
@@ -142,26 +145,36 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Simulate successful form dispatch
       const submitBtn = contactForm.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerHTML;
 
       submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Sending...';
       submitBtn.disabled = true;
 
-      setTimeout(() => {
+      try {
+        const response = await fetch(FORMSPREE_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(contactForm)
+        });
+
+        if (!response.ok) throw new Error('Form submission failed');
+
         submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> Message Sent!';
         submitBtn.style.background = '#10b981';
         showToast('Thank you! Your message has been sent to Caden.');
-
         contactForm.reset();
-
+      } catch (err) {
+        console.error('Contact form submission error:', err);
+        submitBtn.innerHTML = originalText;
+        showToast('Something went wrong sending your message — please try emailing directly instead.', 'error');
+      } finally {
+        submitBtn.disabled = false;
         setTimeout(() => {
           submitBtn.innerHTML = originalText;
-          submitBtn.disabled = false;
           submitBtn.style.background = '';
         }, 3000);
-      }, 1200);
+      }
     });
   }
 
