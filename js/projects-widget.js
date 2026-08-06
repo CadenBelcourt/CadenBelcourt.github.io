@@ -1,7 +1,7 @@
 /* ==========================================================================
    Caden Belcourt - Featured Analytical Projects Interactive Engine
    Modules:
-   1. BDC Commercial Loan Capacity & DSCR Sensitivity Model
+   1. Commercial Loan Capacity & DSCR Sensitivity Model
    2. Cost-Benefit Analysis & DCF Capital Budgeting (Econ 3750)
    3. Macroeconomic Econometrics: FTI vs. GDP OLS Regression (Econ Lab)
    4. Quantitative Paper Trading Journal & Equity Curve Engine
