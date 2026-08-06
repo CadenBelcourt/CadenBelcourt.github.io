@@ -47,20 +47,43 @@ function initProjectTabs() {
 
   if (!tabBtns.length) return;
 
-  tabBtns.forEach(btn => {
+  function activateTab(btn) {
+    const targetId = btn.getAttribute('data-tab');
+
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+      b.setAttribute('tabindex', '-1');
+    });
+    tabPanes.forEach(p => p.classList.remove('active'));
+
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    btn.setAttribute('tabindex', '0');
+
+    const targetPane = document.getElementById(targetId);
+    if (targetPane) {
+      targetPane.classList.add('active');
+      // Trigger chart render for newly visible tab
+      setTimeout(reRenderActiveCharts, 50);
+    }
+  }
+
+  tabBtns.forEach((btn, i) => {
     btn.addEventListener('click', () => {
-      const targetId = btn.getAttribute('data-tab');
+      activateTab(btn);
+      btn.focus();
+    });
 
-      tabBtns.forEach(b => b.classList.remove('active'));
-      tabPanes.forEach(p => p.classList.remove('active'));
-
-      btn.classList.add('active');
-      const targetPane = document.getElementById(targetId);
-      if (targetPane) {
-        targetPane.classList.add('active');
-        // Trigger chart render for newly visible tab
-        setTimeout(reRenderActiveCharts, 50);
-      }
+    // Arrow-key navigation between tabs (standard tab-widget keyboard pattern)
+    btn.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      const next = e.key === 'ArrowRight'
+        ? tabBtns[(i + 1) % tabBtns.length]
+        : tabBtns[(i - 1 + tabBtns.length) % tabBtns.length];
+      activateTab(next);
+      next.focus();
     });
   });
 }
