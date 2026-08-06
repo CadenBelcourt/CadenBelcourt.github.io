@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize Tab Switcher
   initProjectTabs();
 
-  // Initialize Module 1: BDC Commercial Loan Sensitivity Model
+  // Initialize Module 1: Commercial Loan Sensitivity Model
   initLoanSensitivityModel();
 
   // Initialize Module 2: DCF / Cost-Benefit Model
@@ -141,7 +141,7 @@ function getThemeColors() {
 }
 
 /* ==========================================================================
-   MODULE 1: BDC Commercial Loan Capacity & Sensitivity Model
+   MODULE 1: Commercial Loan Capacity & Sensitivity Model
    ========================================================================== */
 function initLoanSensitivityModel() {
   const loanInput = document.getElementById('input-loan');
