@@ -3,7 +3,61 @@
    Design System: Clean, Professional Corporate Finance Aesthetic
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+/* Fonts are now loaded via <link> in index.html <head> (faster than @import) */
+
+/* --------------------------------------------------------------------------
+   0. Accessibility: skip link, focus states, reduced motion
+   -------------------------------------------------------------------------- */
+.skip-link {
+  position: absolute;
+  top: -60px;
+  left: 1rem;
+  z-index: 1000;
+  background: var(--accent-navy);
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: top var(--transition-fast);
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+input[type="range"]:focus-visible {
+  outline: 3px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+.form-input:focus-visible,
+.form-input:focus {
+  outline: none;
+  border-color: var(--accent-navy);
+  box-shadow: 0 0 0 3px var(--accent-blue-subtle);
+}
+
+.project-tab-btn:focus-visible,
+.btn:focus-visible,
+.nav-link:focus-visible,
+.theme-toggle-btn:focus-visible,
+.mobile-toggle:focus-visible,
+.copy-btn:focus-visible {
+  outline: 3px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
 /* --------------------------------------------------------------------------
    1. CSS Custom Properties / Design Tokens
@@ -1157,4 +1211,3 @@ textarea.form-input {
   color: var(--text-muted);
   max-width: 260px;
 }
-
